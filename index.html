@@ -1,701 +1,740 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yashika Barhaiya – Supply Chain Digital Transformation</title>
+<title>Yashika Barhaiya — Supply Chain Digital Transformation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
 
+/* ─────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────── */
 :root {
-  --paper: #fdfcf9;
-  --ink: #1e1c18;
-  --ink-mid: #4a4640;
-  --ink-soft: #8a8278;
-  --teal: #3a6b72;
-  --teal-light: #b8d4d8;
-  --teal-pale: #ecf4f5;
-  --gold: #b8953a;
-  --gold-light: #e0cfa0;
-  --gold-pale: #f7f2e6;
-  --rule: #e0dbd2;
+  --bone:    #F5F0E8;   /* background */
+  --espresso:#1C1410;   /* primary text */
+  --gold:    #A8844A;   /* accent */
+  --stone:   #E8E4DC;   /* secondary surface */
+  --mid:     #6B5F52;   /* secondary text */
+  --soft:    #A99B8C;   /* tertiary / labels */
+  --rule:    #D9D3C7;   /* dividers */
+  --gold-pale:#F2EBD9;  /* hover tint */
+
+  /* Typography */
+  --serif: 'Cormorant Garamond', 'Garamond', Georgia, serif;
+  --sans:  'Neue Haas Grotesk Text', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+/* ─────────────────────────────────────────────
+   RESET + BASE
+───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 1.7;
+  background: var(--bone);
+  color: var(--espresso);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.65;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── EDITOR TOOLBAR ── */
+/* ─────────────────────────────────────────────
+   EDITOR TOOLBAR
+───────────────────────────────────────────── */
 #editor-bar {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  position: fixed; bottom: 2rem; right: 2rem;
   z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.6rem;
-  font-family: 'DM Sans', sans-serif;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;
+  font-family: var(--sans);
 }
 #editor-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: var(--ink);
-  color: var(--paper);
-  border: none;
-  padding: 0.7rem 1.2rem;
-  font-size: 0.72rem;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 40px;
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--espresso); color: var(--bone);
+  border: none; padding: 0.65rem 1.1rem;
+  font-size: 0.68rem; font-family: var(--sans); font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  cursor: pointer; border-radius: 2px;
   transition: background 0.2s;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 20px rgba(28,20,16,0.22);
 }
-#editor-toggle:hover { background: var(--teal); }
+#editor-toggle:hover, #editor-toggle.active { background: var(--gold); }
 #editor-toggle .dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--gold);
-  flex-shrink: 0;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0; transition: background 0.2s;
 }
-#editor-toggle.active { background: var(--teal); }
-
-#editor-panel {
-  display: none;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-end;
-}
+#editor-toggle.active .dot { background: var(--bone); }
+#editor-panel { display: none; flex-direction: column; gap: 0.4rem; align-items: flex-end; }
 #editor-panel.open { display: flex; }
-
 .ed-btn {
-  background: white;
-  border: 1px solid var(--rule);
-  color: var(--ink-mid);
-  padding: 0.55rem 1rem;
-  font-size: 0.7rem;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 40px;
-  transition: all 0.2s;
-  white-space: nowrap;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background: var(--bone); border: 1px solid var(--rule); color: var(--mid);
+  padding: 0.5rem 0.9rem; font-size: 0.67rem; font-family: var(--sans);
+  font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 2px; transition: all 0.2s; white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(28,20,16,0.08);
 }
-.ed-btn:hover { border-color: var(--teal); color: var(--teal); }
-.ed-btn.danger:hover { border-color: #c0392b; color: #c0392b; }
-.ed-btn.primary {
-  background: var(--teal);
-  border-color: var(--teal);
-  color: white;
-}
-.ed-btn.primary:hover { background: var(--ink); border-color: var(--ink); }
-
+.ed-btn:hover { border-color: var(--gold); color: var(--gold); }
+.ed-btn.danger:hover { border-color: #922; color: #922; }
+.ed-btn.primary { background: var(--gold); border-color: var(--gold); color: var(--bone); }
+.ed-btn.primary:hover { background: var(--espresso); border-color: var(--espresso); }
 #edit-hint {
-  display: none;
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: var(--paper);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.55rem 1.2rem;
-  border-radius: 40px;
-  opacity: 0.85;
-  pointer-events: none;
-  white-space: nowrap;
+  display: none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  background: var(--espresso); color: var(--bone);
+  font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.5rem 1.1rem; border-radius: 2px; opacity: 0.9;
+  pointer-events: none; white-space: nowrap;
 }
 #edit-hint.show { display: block; }
+body.edit-mode [contenteditable="true"] { outline: none; border-radius: 1px; cursor: text; }
+body.edit-mode [contenteditable="true"]:hover { background: rgba(168,132,74,0.07); }
+body.edit-mode [contenteditable="true"]:focus { background: rgba(168,132,74,0.12); box-shadow: 0 0 0 1px rgba(168,132,74,0.3); }
 
-/* ── EDIT MODE STYLES ── */
-body.edit-mode [contenteditable="true"] {
-  outline: none;
-  border-radius: 3px;
-  transition: background 0.15s;
-  cursor: text;
-}
-body.edit-mode [contenteditable="true"]:hover {
-  background: rgba(58,107,114,0.06);
-}
-body.edit-mode [contenteditable="true"]:focus {
-  background: rgba(58,107,114,0.1);
-  box-shadow: 0 0 0 2px rgba(58,107,114,0.25);
-}
-
-/* ── NAV ── */
+/* ─────────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────────── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 2rem 4rem;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 2.25rem 4.5rem;
   display: flex; align-items: center; justify-content: space-between;
   transition: padding 0.4s, background 0.4s, border-color 0.4s;
   border-bottom: 1px solid transparent;
 }
 nav.stuck {
-  padding: 1.25rem 4rem;
-  background: rgba(253,252,249,0.94);
-  backdrop-filter: blur(16px);
+  padding: 1.25rem 4.5rem;
+  background: rgba(245,240,232,0.96);
+  backdrop-filter: blur(20px);
   border-color: var(--rule);
 }
 .nav-mark {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.2rem;
-  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--espresso);
   text-decoration: none;
-  letter-spacing: 0.02em;
 }
 .nav-links {
-  display: flex; gap: 2.5rem; list-style: none;
+  display: flex; gap: 3rem; list-style: none;
 }
 .nav-links a {
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--ink-soft);
+  font-size: 0.7rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none; color: var(--soft);
   transition: color 0.2s;
+  position: relative;
 }
-.nav-links a:hover { color: var(--teal); }
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px; background: var(--gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.nav-links a:hover { color: var(--espresso); }
+.nav-links a:hover::after { transform: scaleX(1); }
 .nav-cta {
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--teal);
-  border-bottom: 1px solid var(--teal-light);
+  font-size: 0.7rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none; color: var(--gold);
+  border-bottom: 1px solid var(--gold-pale);
   padding-bottom: 2px;
   transition: border-color 0.2s;
 }
-.nav-cta:hover { border-color: var(--teal); }
+.nav-cta:hover { border-color: var(--gold); }
 
-/* ── HERO ── */
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
-  display: flex; flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 4rem 6rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0 4.5rem 6rem;
   position: relative;
+  overflow: hidden;
 }
-.hero-ambient {
-  position: absolute; top: 0; right: 0;
-  width: 55vw; height: 100vh;
-  background: radial-gradient(ellipse at 70% 30%, #ecf4f5 0%, transparent 65%),
-              radial-gradient(ellipse at 30% 80%, #f7f2e6 0%, transparent 55%);
-  pointer-events: none;
+.hero-top {
+  display: flex;
+  align-items: flex-end;
+  padding-top: 12rem;
 }
-.hero-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: rise 1s 0.3s forwards;
-}
-.hero-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(4.5rem, 9vw, 9rem);
+.hero-statement {
+  font-family: var(--serif);
   font-weight: 300;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  margin-bottom: 3rem;
+  font-size: clamp(3.5rem, 7vw, 7.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--espresso);
+  max-width: 820px;
   opacity: 0;
-  animation: rise 1s 0.5s forwards;
+  animation: fadeUp 1.1s 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-.hero-name em {
+.hero-statement em {
   font-style: italic;
   color: var(--gold);
-  display: block;
+}
+.hero-rule {
+  width: 48px; height: 1px;
+  background: var(--gold);
+  margin: 4rem 0 2.5rem;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.9s forwards;
+}
+.hero-sub {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+  opacity: 0;
+  animation: fadeIn 0.8s 1.1s forwards;
+  line-height: 1.9;
 }
 .hero-bottom {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 0;
+  border-top: 1px solid var(--rule);
   padding-top: 3rem;
-  border-top: 1px dashed var(--rule);
   opacity: 0;
-  animation: rise 1s 0.8s forwards;
+  animation: fadeIn 0.8s 1.3s forwards;
 }
+.hero-stat {
+  padding-right: 3rem;
+  border-right: 1px solid var(--rule);
+  margin-right: 3rem;
+}
+.hero-stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
 .hero-stat-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.8rem;
+  font-family: var(--serif);
+  font-size: 3.2rem;
   font-weight: 300;
   line-height: 1;
-  color: var(--ink);
+  color: var(--espresso);
+  letter-spacing: -0.02em;
 }
-.hero-stat-num sup {
-  font-size: 1.2rem;
-  vertical-align: super;
-  color: var(--teal);
-}
+.hero-stat-num sup { font-size: 1.3rem; color: var(--gold); vertical-align: super; }
 .hero-stat-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-top: 0.4rem;
+  color: var(--soft);
+  margin-top: 0.6rem;
 }
 .hero-desc {
-  grid-column: span 1;
-  font-size: 0.95rem;
-  color: var(--ink-mid);
-  line-height: 1.8;
-  display: flex; align-items: flex-end;
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--mid);
+  padding-left: 3rem;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.2rem;
 }
 
-/* ── SECTION SHELL ── */
+/* ─────────────────────────────────────────────
+   SECTION SHELL
+───────────────────────────────────────────── */
 .section {
-  padding: 8rem 4rem;
-  border-bottom: 1px dashed var(--rule);
+  padding: 10rem 4.5rem;
+  border-top: 1px solid var(--rule);
 }
-.section-head {
+.section-header {
   display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 4rem;
-  margin-bottom: 5rem;
+  grid-template-columns: 220px 1fr;
+  gap: 5rem;
+  margin-bottom: 7rem;
 }
-.section-index {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--ink-soft);
-  padding-top: 0.6rem;
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--soft);
+  padding-top: 0.8rem;
 }
 .section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 4.5vw, 4.5rem);
   font-weight: 300;
-  line-height: 1.1;
+  line-height: 1.05;
   letter-spacing: -0.01em;
+  color: var(--espresso);
 }
 .section-title em { font-style: italic; color: var(--gold); }
-
-/* ── ABOUT ── */
-.about-body {
+.section-content {
   display: grid;
-  grid-template-columns: 160px 1fr 1fr;
-  gap: 4rem;
-}
-.about-intro p {
-  font-size: 1.05rem;
-  line-height: 1.9;
-  color: var(--ink-mid);
-  margin-bottom: 1.5rem;
-}
-.about-intro p strong { color: var(--ink); font-weight: 500; }
-.about-values { padding-top: 0.3rem; }
-.about-values h3 {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 1.5rem;
-}
-.value-item {
-  padding: 1.25rem 0;
-  border-bottom: 1px dashed var(--rule);
-}
-.value-item:first-of-type { border-top: 1px dashed var(--rule); }
-.value-item h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.05rem;
-  font-weight: 400;
-  color: var(--ink);
-  margin-bottom: 0.3rem;
-}
-.value-item p {
-  font-size: 0.82rem;
-  color: var(--ink-soft);
-  line-height: 1.6;
-}
-
-/* ── WORK ── */
-.work-list {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 0;
-}
-.work-item {
-  padding: 3.5rem 0;
-  border-bottom: 1px dashed var(--rule);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 4rem;
-  align-items: start;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.7s, transform 0.7s;
-}
-.work-item:first-child { border-top: 1px dashed var(--rule); }
-.work-item.vis { opacity: 1; transform: translateY(0); }
-.work-co {
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 0.75rem;
-}
-.work-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.9rem;
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-}
-.work-desc {
-  font-size: 0.88rem;
-  line-height: 1.8;
-  color: var(--ink-mid);
-  max-width: 520px;
-  margin-bottom: 1.25rem;
-}
-.work-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.tag {
-  font-size: 0.67rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.8rem;
-  border: 1px solid var(--rule);
-  color: var(--ink-soft);
-  border-radius: 40px;
-}
-.work-stats {
-  display: flex; flex-direction: column; gap: 1.5rem;
-  text-align: right; padding-top: 0.4rem; min-width: 110px;
-}
-.work-stat-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 300;
-  color: var(--gold);
-  line-height: 1;
-}
-.work-stat-label {
-  font-size: 0.67rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-top: 0.2rem;
-}
-
-/* ── PHILOSOPHY ── */
-.phil-body {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 4rem;
-}
-.phil-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 3rem 4rem;
-}
-.phil-card {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s, transform 0.6s;
-}
-.phil-card.vis { opacity: 1; transform: translateY(0); }
-.phil-card-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.6rem;
-  font-weight: 300;
-  color: var(--teal-light);
-  line-height: 1;
-  margin-bottom: 1rem;
-}
-.phil-card h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
-  font-weight: 500;
-  line-height: 1.4;
-  margin-bottom: 0.75rem;
-  color: var(--ink);
-}
-.phil-card p {
-  font-size: 0.83rem;
-  line-height: 1.7;
-  color: var(--ink-soft);
-}
-.phil-card .example {
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
-  border-top: 1px dashed var(--rule);
-  font-style: italic;
-  font-size: 0.78rem;
-  color: var(--gold);
-  line-height: 1.6;
-}
-
-/* ── SKILLS ── */
-.skills-body {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 4rem;
-}
-.skills-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 4rem;
-}
-.skill-group-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 1.5rem;
-}
-.skill-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.65rem 0;
-  border-bottom: 1px dashed var(--rule);
-  font-size: 0.85rem;
-  color: var(--ink-mid);
-}
-.skill-row:first-of-type { border-top: 1px dashed var(--rule); }
-
-/* ── EXPERIENCE ── */
-.exp-body {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 4rem;
-}
-.exp-item {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 3rem;
-  padding: 3rem 0;
-  border-bottom: 1px dashed var(--rule);
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.7s, transform 0.7s;
-}
-.exp-item:first-child { border-top: 1px dashed var(--rule); }
-.exp-item.vis { opacity: 1; transform: translateY(0); }
-.exp-date {
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  color: var(--ink-soft);
-  padding-top: 0.2rem;
-  line-height: 1.8;
-}
-.exp-role {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin-bottom: 0.2rem;
-  line-height: 1.2;
-}
-.exp-company {
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 1rem;
-}
-.exp-bullets { list-style: none; }
-.exp-bullets li {
-  font-size: 0.85rem;
-  line-height: 1.8;
-  color: var(--ink-mid);
-  padding-left: 1.2rem;
-  position: relative;
-  margin-bottom: 0.25rem;
-}
-.exp-bullets li::before {
-  content: '—';
-  position: absolute; left: 0;
-  color: var(--gold);
-  font-size: 0.75rem;
-}
-.exp-bullets li strong { color: var(--ink); font-weight: 500; }
-
-/* ── CREDENTIALS ── */
-.cred-section { background: var(--teal-pale); }
-.cred-body {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 4rem;
-}
-.cred-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 220px 1fr;
   gap: 5rem;
 }
-.cred-group-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 1.5rem;
-}
-.cred-item {
-  padding: 1.1rem 0;
-  border-bottom: 1px dashed var(--teal-light);
-}
-.cred-item:first-of-type { border-top: 1px dashed var(--teal-light); }
-.cred-item h4 {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: var(--ink);
-  margin-bottom: 0.2rem;
-}
-.cred-item span {
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-  letter-spacing: 0.04em;
-}
 
-/* ── PLACEHOLDER ── */
-.placeholder-note {
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  color: var(--teal-light);
-  font-style: italic;
-}
-
-/* ── CONTACT ── */
-.contact-inner {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 4rem;
-}
-.contact-content {
+/* ─────────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────────── */
+.about-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6rem;
   align-items: start;
 }
-.contact-intro p {
+.about-para {
   font-size: 1rem;
   line-height: 1.9;
-  color: var(--ink-mid);
-  margin-top: 1.5rem;
+  color: var(--mid);
+  margin-bottom: 1.6rem;
 }
-.contact-links { display: flex; flex-direction: column; gap: 0; margin-top: 0.4rem; }
-.contact-link {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.4rem 0;
-  border-bottom: 1px dashed var(--rule);
-  text-decoration: none;
-  color: var(--ink);
-  transition: padding-left 0.25s;
-}
-.contact-link:first-child { border-top: 1px dashed var(--rule); }
-.contact-link:hover { padding-left: 0.5rem; }
-.contact-type {
+.about-para strong { color: var(--espresso); font-weight: 500; }
+.about-values-label {
   font-size: 0.65rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+.value-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.value-item:first-of-type { border-top: 1px solid var(--rule); }
+.value-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--espresso);
+  margin-bottom: 0.4rem;
+}
+.value-desc {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--soft);
+}
+
+/* ─────────────────────────────────────────────
+   WORK — asymmetric 2-column grid
+───────────────────────────────────────────── */
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--rule);
+}
+.work-card {
+  background: var(--bone);
+  padding: 4rem;
+  transition: background 0.3s;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.7s, transform 0.7s, background 0.3s;
+}
+.work-card:hover { background: var(--stone); }
+.work-card.vis { opacity: 1; transform: translateY(0); }
+.work-card.wide { grid-column: span 2; }
+.work-card.featured {
+  padding: 5rem;
+}
+.work-card-co {
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.work-card-title {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--espresso);
+  margin-bottom: 1.5rem;
+}
+.work-card.featured .work-card-title {
+  font-size: 2.4rem;
+}
+.work-card-desc {
+  font-size: 0.85rem;
+  line-height: 1.85;
+  color: var(--mid);
+  margin-bottom: 2.5rem;
+  max-width: 540px;
+}
+.work-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+.tag {
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid var(--rule);
+  color: var(--soft);
+}
+.work-metrics { display: flex; gap: 3rem; }
+.work-metric-num {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.work-metric-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin-top: 0.3rem;
+}
+
+/* ─────────────────────────────────────────────
+   APPROACH — 3-col principles
+───────────────────────────────────────────── */
+.approach-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4rem 5rem;
+}
+.principle {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.principle.vis { opacity: 1; transform: translateY(0); }
+.principle-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--rule);
+  margin-bottom: 1.2rem;
+  line-height: 1;
+}
+.principle-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--espresso);
+  margin-bottom: 0.75rem;
+}
+.principle-body {
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: var(--soft);
+}
+
+/* ─────────────────────────────────────────────
+   SKILLS
+───────────────────────────────────────────── */
+.skills-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5rem;
+}
+.skill-group-label {
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+.skill-row {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem;
+  color: var(--mid);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.skill-row:first-of-type { border-top: 1px solid var(--rule); }
+.skill-row:hover { color: var(--espresso); padding-left: 0.4rem; }
+
+/* ─────────────────────────────────────────────
+   EXPERIENCE
+───────────────────────────────────────────── */
+.exp-list { display: flex; flex-direction: column; }
+.exp-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4rem;
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--rule);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.exp-item:first-child { border-top: 1px solid var(--rule); }
+.exp-item.vis { opacity: 1; transform: translateY(0); }
+.exp-date {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--soft);
+  line-height: 1.9;
+  padding-top: 0.15rem;
+}
+.exp-date strong { color: var(--mid); font-weight: 500; display: block; margin-bottom: 0.3rem; }
+.exp-role {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--espresso);
   margin-bottom: 0.2rem;
 }
-.contact-val { font-size: 0.9rem; color: var(--ink-mid); }
-.contact-arrow { color: var(--rule); font-size: 1rem; transition: color 0.2s, transform 0.2s; }
+.exp-company {
+  font-size: 0.67rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.exp-bullets { list-style: none; }
+.exp-bullets li {
+  font-size: 0.84rem;
+  line-height: 1.85;
+  color: var(--mid);
+  padding-left: 1.4rem;
+  position: relative;
+  margin-bottom: 0.3rem;
+}
+.exp-bullets li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--gold);
+  font-size: 0.72rem;
+}
+.exp-bullets li strong { color: var(--espresso); font-weight: 500; }
+
+/* ─────────────────────────────────────────────
+   CREDENTIALS — stone background section
+───────────────────────────────────────────── */
+.section-stone { background: var(--stone); border-top: 1px solid var(--rule); }
+.cred-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7rem;
+}
+.cred-group-label {
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+.cred-item {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.cred-item:first-of-type { border-top: 1px solid var(--rule); }
+.cred-title {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--espresso);
+  margin-bottom: 0.2rem;
+}
+.cred-sub {
+  font-size: 0.73rem;
+  color: var(--soft);
+  letter-spacing: 0.03em;
+}
+
+/* ─────────────────────────────────────────────
+   THOUGHTS
+───────────────────────────────────────────── */
+.thoughts-intro {
+  font-size: 0.88rem;
+  color: var(--soft);
+  line-height: 1.85;
+  margin-bottom: 4rem;
+  max-width: 540px;
+}
+.thoughts-list { display: flex; flex-direction: column; }
+.thought-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4rem;
+  align-items: start;
+  padding: 2.75rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.7s, transform 0.7s, padding-left 0.25s;
+}
+.thought-item:first-child { border-top: 1px solid var(--rule); }
+.thought-item.vis { opacity: 1; transform: translateY(0); }
+.thought-item:hover { padding-left: 0.5rem; }
+.thought-item:hover .thought-arrow { color: var(--gold); transform: translateX(4px); }
+.thought-category {
+  font-size: 0.63rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem;
+}
+.thought-title {
+  font-family: var(--serif);
+  font-size: 1.5rem; font-weight: 400; line-height: 1.2;
+  color: var(--espresso); margin-bottom: 0.6rem;
+}
+.thought-excerpt {
+  font-size: 0.82rem; line-height: 1.8; color: var(--soft); max-width: 540px;
+}
+.thought-meta {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 0.4rem;
+  padding-top: 0.2rem; min-width: 90px;
+}
+.thought-date { font-size: 0.67rem; letter-spacing: 0.08em; color: var(--soft); white-space: nowrap; }
+.thought-read { font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rule); }
+.thought-arrow { font-size: 0.9rem; color: var(--rule); transition: color 0.2s, transform 0.2s; }
+.thought-draft { display: none; }
+
+/* ─────────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────────── */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+}
+.contact-intro-text {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--mid);
+  margin-top: 1rem;
+}
+.contact-links { display: flex; flex-direction: column; margin-top: 0.2rem; }
+.contact-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none; color: var(--espresso);
+  transition: padding-left 0.25s;
+}
+.contact-link:first-child { border-top: 1px solid var(--rule); }
+.contact-link:hover { padding-left: 0.5rem; }
 .contact-link:hover .contact-arrow { color: var(--gold); transform: translateX(4px); }
+.contact-type {
+  font-size: 0.63rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: 0.2rem;
+}
+.contact-val { font-size: 0.88rem; color: var(--mid); }
+.contact-arrow { color: var(--rule); font-size: 0.9rem; transition: color 0.2s, transform 0.2s; }
 
-/* ── FOOTER ── */
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
 footer {
-  padding: 2.5rem 4rem;
+  padding: 3rem 4.5rem;
   display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px dashed var(--rule);
+  border-top: 1px solid var(--rule);
 }
-footer p { font-size: 0.75rem; letter-spacing: 0.08em; color: var(--ink-soft); }
-footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+footer p { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--soft); }
+footer em { font-family: var(--serif); font-style: italic; }
 
-/* ── REVEAL ── */
-.reveal {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
+/* ─────────────────────────────────────────────
+   PLACEHOLDER
+───────────────────────────────────────────── */
+.ph { font-size: 0.72rem; color: var(--rule); font-style: italic; letter-spacing: 0.04em; }
+
+/* ─────────────────────────────────────────────
+   REVEAL
+───────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal.vis { opacity: 1; transform: translateY(0); }
 
-@keyframes rise {
-  from { opacity: 0; transform: translateY(22px); }
+/* ─────────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  nav { padding: 1.5rem 2rem; }
-  nav.stuck { padding: 1rem 2rem; }
-  .nav-links { display: none; }
-  .hero { padding: 0 2rem 5rem; }
-  .hero-name { font-size: 4rem; }
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero { padding: 0 3rem 5rem; }
+  nav { padding: 1.75rem 3rem; }
+  nav.stuck { padding: 1rem 3rem; }
+  .section { padding: 7rem 3rem; }
+  .section-header { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 5rem; }
+  .section-content { grid-template-columns: 1fr; gap: 3rem; }
+  .about-main { grid-template-columns: 1fr; gap: 4rem; }
+  .work-grid { grid-template-columns: 1fr; }
+  .work-card.wide, .work-card.featured { grid-column: span 1; }
+  .approach-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .skills-cols { grid-template-columns: 1fr; gap: 3rem; }
+  .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+  .cred-cols { grid-template-columns: 1fr; gap: 3rem; }
+  .contact-layout { grid-template-columns: 1fr; gap: 4rem; }
   .hero-bottom { grid-template-columns: 1fr 1fr; }
-  .section { padding: 5rem 2rem; }
-  .section-head { grid-template-columns: 1fr; gap: 1rem; }
-  .about-body { grid-template-columns: 1fr; gap: 2.5rem; }
-  .about-body .spacer { display: none; }
-  .work-list { grid-template-columns: 1fr; }
-  .work-item { grid-template-columns: 1fr; }
-  .work-stats { flex-direction: row; text-align: left; }
-  .phil-body, .skills-body, .exp-body, .cred-body, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
-  .phil-grid, .skills-cols { grid-template-columns: 1fr; gap: 2rem; }
-  .cred-cols { grid-template-columns: 1fr; gap: 2rem; }
-  .contact-content { grid-template-columns: 1fr; gap: 3rem; }
-  .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
-  footer { padding: 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  .hero-desc { padding-left: 0; border-left: none; grid-column: span 2; padding-top: 2rem; border-top: 1px solid var(--rule); }
+}
+@media (max-width: 680px) {
+  nav { padding: 1.25rem 1.75rem; }
+  nav.stuck { padding: 0.9rem 1.75rem; }
+  .nav-links { display: none; }
+  .hero { padding: 0 1.75rem 4rem; }
+  .hero-statement { font-size: 2.8rem; }
+  .hero-bottom { grid-template-columns: 1fr; }
+  .hero-stat { border-right: none; margin-right: 0; padding-right: 0; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.5rem; }
+  .hero-desc { grid-column: span 1; padding-top: 0; border-top: none; }
+  .section { padding: 5rem 1.75rem; }
+  .approach-grid { grid-template-columns: 1fr; }
+  footer { padding: 2rem 1.75rem; flex-direction: column; gap: 0.5rem; text-align: center; }
   #editor-bar { bottom: 1rem; right: 1rem; }
 }
 </style>
 </head>
-<body class="">
+<body>
 
 <!-- EDITOR TOOLBAR -->
-
-
+<div id="editor-bar">
+  <div id="editor-panel">
+    <button class="ed-btn primary" onclick="saveHTML()">⬇ Download HTML</button>
+    <button class="ed-btn" onclick="copyHTML()">Copy HTML</button>
+    <button class="ed-btn danger" onclick="resetEdits()">Reset changes</button>
+  </div>
+  <button id="editor-toggle" onclick="toggleEdit()">
+    <span class="dot"></span>
+    <span id="toggle-label">Edit page</span>
+  </button>
+</div>
+<div id="edit-hint">Click any text to edit it</div>
 
 <!-- NAV -->
-<nav id="nav" class="stuck">
+<nav id="nav">
   <a href="#" class="nav-mark">Yashika Barhaiya</a>
   <ul class="nav-links">
     <li><a href="#work">Work</a></li>
     <li><a href="#approach">Approach</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#thoughts">Thoughts</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:your.email@gmail.com" class="nav-cta" id="nav-email">Open to opportunities</a>
+  <a href="mailto:your.email@gmail.com" class="nav-cta">Open to opportunities</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-ambient"></div>
-  <p class="hero-label">Supply Chain Digital Transformation &nbsp;·&nbsp; 7+ Years</p>
-  <h1 class="hero-name">
-    <span>Yashika</span><em>Barhaiya.</em>
-  </h1>
+  <div class="hero-top">
+    <div>
+      <h1 class="hero-statement" contenteditable="false">Where luxury supply chains meet<em> intelligent planning.</em></h1>
+      <div class="hero-rule"></div>
+      <p class="hero-sub" contenteditable="false">
+        Supply Chain Digital Transformation &nbsp;&nbsp;·&nbsp;&nbsp; o9 Solutions Technical Lead &nbsp;&nbsp;·&nbsp;&nbsp; 7+ Years
+      </p>
+    </div>
+  </div>
   <div class="hero-bottom">
     <div class="hero-stat">
-      <div class="hero-stat-num">100<sup>+</sup></div>
-      <div class="hero-stat-label">Markets configured</div>
+      <div class="hero-stat-num" contenteditable="false">100<sup>+</sup></div>
+      <div class="hero-stat-label" contenteditable="false">Markets configured</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-num">7<sup>+</sup></div>
-      <div class="hero-stat-label">Years delivering transformation</div>
+      <div class="hero-stat-num" contenteditable="false">7<sup>+</sup></div>
+      <div class="hero-stat-label" contenteditable="false">Years delivering transformation</div>
     </div>
-    <div class="hero-desc">
+    <div class="hero-desc" contenteditable="false">
       o9 Solutions Technical Lead with deep roots in luxury and beauty supply chain — turning seasonal complexity, multi-brand portfolios, and 102-market operations into AI-powered planning platforms.
     </div>
   </div>
@@ -703,29 +742,31 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 
 <!-- ABOUT -->
 <section class="section" id="about">
-  <div class="section-head reveal vis">
-    <div class="section-index">i.</div>
+  <div class="section-header reveal">
+    <div class="section-label">i. &nbsp; About</div>
     <h2 class="section-title">The work<br><em>I do.</em></h2>
   </div>
-  <div class="about-body">
-    <div class="spacer"></div>
-    <div class="about-intro reveal vis">
-      <p>I'm a <strong>Supply Chain Digital Transformation specialist</strong> with 7+ years delivering end-to-end planning programs for global Luxury, Beauty, and CPG enterprises. Currently at Accenture Strategy &amp; Consulting, I serve as <strong>o9 Solutions Technical Lead</strong> for a top-5 global beauty conglomerate — configuring demand planning, supply planning, and inventory optimization across 100+ product categories and 102 markets.</p>
-      <p>My edge is a rare combination: fashion management depth from <strong>NIFT India</strong>, luxury brand operations from <strong>Ralph Lauren</strong>, and advanced platform delivery at <strong>Accenture and EY</strong>. I translate what luxury supply chains actually need — seasonal cycles, limited editions, multi-brand complexity — into scalable, intelligent planning solutions.</p>
-    </div>
-    <div class="about-values reveal vis">
-      <h3>What drives my work</h3>
-      <div class="value-item">
-        <h4>Translating complexity into clarity</h4>
-        <p>Luxury supply chains don't fit standard templates. I find the configuration that reflects how the business actually runs.</p>
+  <div class="section-content">
+    <div></div>
+    <div class="about-main reveal">
+      <div>
+        <p class="about-para" contenteditable="false">I'm a <strong>Supply Chain Digital Transformation specialist</strong> with 7+ years delivering end-to-end planning programs for global Luxury, Beauty, and CPG enterprises. Currently at Accenture Strategy &amp; Consulting, I serve as <strong>o9 Solutions Technical Lead</strong> for a top-5 global beauty conglomerate — configuring demand planning, supply planning, and inventory optimization across 100+ product categories and 102 markets.</p>
+        <p class="about-para" contenteditable="false">My edge is a rare combination: fashion management depth from <strong>NIFT India</strong>, luxury brand operations from <strong>Ralph Lauren</strong>, and advanced platform delivery at <strong>Accenture and EY</strong>. I translate what luxury supply chains actually need — seasonal cycles, limited editions, multi-brand complexity — into scalable, intelligent planning solutions.</p>
       </div>
-      <div class="value-item">
-        <h4>C-suite to system config</h4>
-        <p>I lead workshops at the executive level and then go configure the platform. Both halves matter.</p>
-      </div>
-      <div class="value-item">
-        <h4>AI where it earns its place</h4>
-        <p>Demand sensing and statistical forecasting are only as good as the data architecture behind them. I build that architecture.</p>
+      <div>
+        <div class="about-values-label">What drives my work</div>
+        <div class="value-item">
+          <div class="value-title" contenteditable="false">Translating complexity into clarity</div>
+          <p class="value-desc" contenteditable="false">Luxury supply chains don't fit standard templates. I find the configuration that reflects how the business actually runs.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-title" contenteditable="false">C-suite to system config</div>
+          <p class="value-desc" contenteditable="false">I lead workshops at the executive level and then go configure the platform. Both halves matter.</p>
+        </div>
+        <div class="value-item">
+          <div class="value-title" contenteditable="false">AI where it earns its place</div>
+          <p class="value-desc" contenteditable="false">Demand sensing and statistical forecasting are only as good as the data architecture behind them. I build that architecture.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -733,121 +774,118 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 
 <!-- WORK -->
 <section class="section" id="work">
-  <div class="section-head reveal">
-    <div class="section-index">ii.</div>
+  <div class="section-header reveal">
+    <div class="section-label">ii. &nbsp; Work</div>
     <h2 class="section-title">Selected<br><em>work.</em></h2>
   </div>
-  <div class="work-list">
+  <div class="section-content">
     <div></div>
-    <div class="work-items">
+    <div>
+      <div class="work-grid">
 
-      <div class="work-item">
-        <div class="work-meta">
-          <div class="work-co">Accenture &nbsp;·&nbsp; Global Beauty Conglomerate</div>
-          <h3 class="work-title">AI-Powered Planning Platform Across 102 Markets</h3>
-          <p class="work-desc">Led end-to-end o9 technical configuration for a top-5 global beauty conglomerate — spanning demand sensing, statistical forecasting, consensus planning, and supply optimization. Architected SAP data integration frameworks enabling seamless master data flow, and designed planning logic that holds across 100+ product categories and the full complexity of global beauty distribution.</p>
+        <!-- Featured large card -->
+        <div class="work-card featured wide">
+          <div class="work-card-co" contenteditable="false">Accenture &nbsp;·&nbsp; Global Beauty Conglomerate</div>
+          <h3 class="work-card-title" contenteditable="false">AI-Powered Planning Platform Across 102 Markets</h3>
+          <p class="work-card-desc" contenteditable="false">Led end-to-end o9 technical configuration for a top-5 global beauty conglomerate — spanning demand sensing, statistical forecasting, consensus planning, and supply optimization. Architected SAP data integration frameworks enabling seamless master data flow, and designed planning logic that holds across 100+ product categories and the full complexity of global beauty distribution.</p>
           <div class="work-tags">
-            <span class="tag">o9 Configuration</span>
-            <span class="tag">SAP Integration</span>
-            <span class="tag">Demand Planning</span>
-            <span class="tag">Inventory Optimization</span>
-            <span class="tag">Master Data</span>
+            <span class="tag" contenteditable="false">o9 Configuration</span>
+            <span class="tag" contenteditable="false">SAP Integration</span>
+            <span class="tag" contenteditable="false">Demand Planning</span>
+            <span class="tag" contenteditable="false">Inventory Optimization</span>
+            <span class="tag" contenteditable="false">Master Data</span>
+          </div>
+          <div class="work-metrics">
+            <div>
+              <div class="work-metric-num" contenteditable="false">102</div>
+              <div class="work-metric-label" contenteditable="false">Markets</div>
+            </div>
+            <div>
+              <div class="work-metric-num" contenteditable="false">100+</div>
+              <div class="work-metric-label" contenteditable="false">Product categories</div>
+            </div>
           </div>
         </div>
-        <div class="work-stats">
-          <div>
-            <div class="work-stat-num">102</div>
-            <div class="work-stat-label">Markets</div>
-          </div>
-          <div>
-            <div class="work-stat-num">100+</div>
-            <div class="work-stat-label">Product categories</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="work-item">
-        <div class="work-meta">
-          <div class="work-co">EY &nbsp;·&nbsp; Fashion &amp; Retail Clients</div>
-          <h3 class="work-title">S&amp;OP Design &amp; Demand Planning Transformation</h3>
-          <p class="work-desc">Delivered supply chain diagnostic assessments and technology evaluations for global fashion organizations. Designed demand planning process improvements and S&amp;OP frameworks tailored to seasonal merchandise and open-to-buy planning cycles — the constraints that standard supply chain methodology consistently misses in fashion.</p>
+        <!-- Smaller card -->
+        <div class="work-card">
+          <div class="work-card-co" contenteditable="false">EY &nbsp;·&nbsp; Fashion &amp; Retail Clients</div>
+          <h3 class="work-card-title" contenteditable="false">S&amp;OP Design &amp; Demand Planning Transformation</h3>
+          <p class="work-card-desc" contenteditable="false">Delivered supply chain diagnostic assessments and technology evaluations for global fashion organizations. Designed demand planning process improvements and S&amp;OP frameworks tailored to seasonal merchandise and open-to-buy planning cycles.</p>
           <div class="work-tags">
-            <span class="tag">S&amp;OP Design</span>
-            <span class="tag">Open-to-Buy Planning</span>
-            <span class="tag">Seasonal Planning</span>
-            <span class="tag">Technology Evaluation</span>
+            <span class="tag" contenteditable="false">S&amp;OP Design</span>
+            <span class="tag" contenteditable="false">Open-to-Buy Planning</span>
+            <span class="tag" contenteditable="false">Seasonal Planning</span>
+          </div>
+          <div class="work-metrics">
+            <div>
+              <div class="work-metric-num"><span class="ph">[metric]</span></div>
+              <div class="work-metric-label" contenteditable="false">Outcome</div>
+            </div>
           </div>
         </div>
-        <div class="work-stats">
-          <div>
-            <div class="work-stat-num"><span class="placeholder-note">[metric]</span></div>
-            <div class="work-stat-label">Outcome</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="work-item">
-        <div class="work-meta">
-          <div class="work-co">Ralph Lauren &nbsp;·&nbsp; Enterprise Data Products</div>
-          <h3 class="work-title">Data Product Ownership &amp; Roadmap Delivery</h3>
-          <p class="work-desc">Owned end-to-end product vision, roadmap, and backlog for enterprise data products at Ralph Lauren — translating complex cross-functional requirements into sprint-ready delivery plans. Defined and monitored adoption, quality, and value realization metrics; partnered with Data Engineering and Scrum leadership to convert roadmaps into executable plans without losing the business outcome.</p>
+        <!-- Smaller card -->
+        <div class="work-card">
+          <div class="work-card-co" contenteditable="false">Ralph Lauren &nbsp;·&nbsp; Enterprise Data Products</div>
+          <h3 class="work-card-title" contenteditable="false">Data Product Ownership &amp; Roadmap Delivery</h3>
+          <p class="work-card-desc" contenteditable="false">Owned end-to-end product vision, roadmap, and backlog for enterprise data products at Ralph Lauren — translating complex cross-functional requirements into sprint-ready delivery plans. Defined and monitored adoption, quality, and value realization metrics.</p>
           <div class="work-tags">
-            <span class="tag">Product Management</span>
-            <span class="tag">Backlog Prioritization</span>
-            <span class="tag">Data Products</span>
-            <span class="tag">Stakeholder Management</span>
+            <span class="tag" contenteditable="false">Product Management</span>
+            <span class="tag" contenteditable="false">Backlog Prioritization</span>
+            <span class="tag" contenteditable="false">Data Products</span>
+          </div>
+          <div class="work-metrics">
+            <div>
+              <div class="work-metric-num"><span class="ph">[metric]</span></div>
+              <div class="work-metric-label" contenteditable="false">Outcome</div>
+            </div>
           </div>
         </div>
-        <div class="work-stats">
-          <div>
-            <div class="work-stat-num"><span class="placeholder-note">[metric]</span></div>
-            <div class="work-stat-label">Outcome</div>
-          </div>
-        </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </section>
 
 <!-- APPROACH -->
 <section class="section" id="approach">
-  <div class="section-head reveal">
-    <div class="section-index">iii.</div>
+  <div class="section-header reveal">
+    <div class="section-label">iii. &nbsp; Approach</div>
     <h2 class="section-title">How I<br><em>think.</em></h2>
   </div>
-  <div class="phil-body">
+  <div class="section-content">
     <div></div>
-    <div class="phil-grid">
-      <div class="phil-card">
-        <div class="phil-card-num">01</div>
-        <h3>Luxury requires its own logic</h3>
-        <p>Standard supply chain templates weren't built for seasonal planning cycles, limited edition drops, or multi-brand portfolio constraints. I configure for how luxury actually operates.</p>
+    <div class="approach-grid">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <div class="principle-title" contenteditable="false">Luxury requires its own logic</div>
+        <p class="principle-body" contenteditable="false">Standard supply chain templates weren't built for seasonal planning cycles, limited edition drops, or multi-brand portfolio constraints. I configure for how luxury actually operates.</p>
       </div>
-      <div class="phil-card">
-        <div class="phil-card-num">02</div>
-        <h3>The C-suite workshop informs the config</h3>
-        <p>Planning transformation fails when platform setup is disconnected from strategy. I run both — the executive alignment session and the technical configuration that follows from it.</p>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <div class="principle-title" contenteditable="false">The C-suite workshop informs the config</div>
+        <p class="principle-body" contenteditable="false">Planning transformation fails when platform setup is disconnected from strategy. I run both — the executive alignment session and the technical configuration that follows from it.</p>
       </div>
-      <div class="phil-card">
-        <div class="phil-card-num">03</div>
-        <h3>Data architecture before AI features</h3>
-        <p>AI-powered demand sensing is only as good as the master data behind it. I build the SAP integration frameworks and data governance that make intelligent planning actually intelligent.</p>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <div class="principle-title" contenteditable="false">Data architecture before AI features</div>
+        <p class="principle-body" contenteditable="false">AI-powered demand sensing is only as good as the master data behind it. I build the SAP integration frameworks and data governance that make intelligent planning actually intelligent.</p>
       </div>
-      <div class="phil-card">
-        <div class="phil-card-num">04</div>
-        <h3>Scale is in the design, not the rollout</h3>
-        <p>Configuring for 102 markets doesn't mean 102 separate configurations. The planning architecture has to carry that complexity from the start.</p>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <div class="principle-title" contenteditable="false">Scale is in the design, not the rollout</div>
+        <p class="principle-body" contenteditable="false">Configuring for 102 markets doesn't mean 102 separate configurations. The planning architecture has to carry that complexity from the start.</p>
       </div>
-      <div class="phil-card">
-        <div class="phil-card-num">05</div>
-        <h3>Fashion background, technology delivery</h3>
-        <p>NIFT and Ralph Lauren gave me fluency in how fashion businesses think. Accenture and EY gave me the delivery method. Together they close the translation gap that most implementation teams miss.</p>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <div class="principle-title" contenteditable="false">Fashion background, technology delivery</div>
+        <p class="principle-body" contenteditable="false">NIFT and Ralph Lauren gave me fluency in how fashion businesses think. Accenture and EY gave me the delivery method. Together they close the translation gap that most implementation teams miss.</p>
       </div>
-      <div class="phil-card">
-        <div class="phil-card-num">06</div>
-        <h3><span class="placeholder-note">[Add a sixth principle title]</span></h3>
-        <p><span class="placeholder-note">[A belief about supply chain transformation that shapes how you work]</span></p>
+      <div class="principle">
+        <div class="principle-num">06</div>
+        <div class="principle-title" contenteditable="false"><span class="ph">[Add a sixth principle title]</span></div>
+        <p class="principle-body" contenteditable="false"><span class="ph">[A belief about supply chain transformation that shapes how you work]</span></p>
       </div>
     </div>
   </div>
@@ -855,35 +893,35 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 
 <!-- SKILLS -->
 <section class="section" id="skills">
-  <div class="section-head reveal">
-    <div class="section-index">iv.</div>
+  <div class="section-header reveal">
+    <div class="section-label">iv. &nbsp; Capabilities</div>
     <h2 class="section-title">Tools &amp;<br><em>capabilities.</em></h2>
   </div>
-  <div class="skills-body">
+  <div class="section-content">
     <div></div>
     <div class="skills-cols reveal">
       <div>
         <div class="skill-group-label">Planning Platforms</div>
-        <div class="skill-row">o9 Solutions (Technical Lead)</div>
-        <div class="skill-row">SAP (Data Integration &amp; MDM)</div>
-        <div class="skill-row">Demand Planning &amp; Sensing</div>
-        <div class="skill-row">Supply &amp; Inventory Optimization</div>
-        <div class="skill-row">Integrated Business Planning (IBP)</div>
+        <div class="skill-row" contenteditable="false">o9 Solutions (Technical Lead)</div>
+        <div class="skill-row" contenteditable="false">SAP (Data Integration &amp; MDM)</div>
+        <div class="skill-row" contenteditable="false">Demand Planning &amp; Sensing</div>
+        <div class="skill-row" contenteditable="false">Supply &amp; Inventory Optimization</div>
+        <div class="skill-row" contenteditable="false">Integrated Business Planning (IBP)</div>
       </div>
       <div>
         <div class="skill-group-label">Analytics &amp; Data</div>
-        <div class="skill-row">AI Context Engineering</div>
-        <div class="skill-row">SQL</div>
-        <div class="skill-row">Tableau</div>
-        <div class="skill-row">Advanced Excel</div>
-        <div class="skill-row">Master Data Management</div>
+        <div class="skill-row" contenteditable="false">AI Context Engineering</div>
+        <div class="skill-row" contenteditable="false">SQL</div>
+        <div class="skill-row" contenteditable="false">Tableau</div>
+        <div class="skill-row" contenteditable="false">Advanced Excel</div>
+        <div class="skill-row" contenteditable="false">Master Data Management</div>
       </div>
       <div>
         <div class="skill-group-label">Certifications</div>
-        <div class="skill-row">o9 Advanced Technical Expert <span class="placeholder-note">[year]</span></div>
-        <div class="skill-row">SAFe Agile</div>
-        <div class="skill-row">IBM Product Management</div>
-        <div class="skill-row"><span class="placeholder-note">[Additional certification]</span></div>
+        <div class="skill-row" contenteditable="false">o9 Advanced Technical Expert <span class="ph">[year]</span></div>
+        <div class="skill-row" contenteditable="false">SAFe Agile</div>
+        <div class="skill-row" contenteditable="false">IBM Product Management</div>
+        <div class="skill-row" contenteditable="false"><span class="ph">[Additional certification]</span></div>
       </div>
     </div>
   </div>
@@ -891,85 +929,85 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 
 <!-- EXPERIENCE -->
 <section class="section" id="experience">
-  <div class="section-head reveal">
-    <div class="section-index">v.</div>
+  <div class="section-header reveal">
+    <div class="section-label">v. &nbsp; Experience</div>
     <h2 class="section-title">Where I've<br><em>worked.</em></h2>
   </div>
-  <div class="exp-body">
+  <div class="section-content">
     <div></div>
     <div class="exp-list">
 
       <div class="exp-item">
-        <div class="exp-date">Nov 2023 – Present<br>Accenture<br>Mumbai, India</div>
+        <div class="exp-date" contenteditable="false"><strong>Accenture</strong>Nov 2023 – Present<br>Mumbai, India</div>
         <div>
-          <div class="exp-role">Management Consultant</div>
-          <div class="exp-company">Strategy &amp; Consulting</div>
+          <div class="exp-role" contenteditable="false">Management Consultant</div>
+          <div class="exp-company" contenteditable="false">Strategy &amp; Consulting</div>
           <ul class="exp-bullets">
-            <li>Lead end-to-end <strong>o9 technical configuration</strong> for global Luxury and Beauty enterprise clients, delivering AI-powered demand planning and supply chain transformation</li>
-            <li>o9 Technical Lead for a <strong>top-5 global beauty conglomerate</strong> — demand planning, supply planning, and inventory optimization across 100+ product categories and 102 markets</li>
-            <li>Architect integrated planning solutions spanning <strong>demand sensing, statistical forecasting, consensus planning, and supply optimization</strong> across Luxury, Beauty, and CPG</li>
-            <li>Design and execute <strong>SAP data integration frameworks</strong> enabling master data flow across enterprise planning ecosystems; lead C-suite workshops on luxury supply chain complexity</li>
+            <li contenteditable="false">Lead end-to-end <strong>o9 technical configuration</strong> for global Luxury and Beauty enterprise clients, delivering AI-powered demand planning and supply chain transformation</li>
+            <li contenteditable="false">o9 Technical Lead for a <strong>top-5 global beauty conglomerate</strong> — demand planning, supply planning, and inventory optimization across 100+ product categories and 102 markets</li>
+            <li contenteditable="false">Architect integrated planning solutions spanning <strong>demand sensing, statistical forecasting, consensus planning, and supply optimization</strong> across Luxury, Beauty, and CPG</li>
+            <li contenteditable="false">Design and execute <strong>SAP data integration frameworks</strong> enabling master data flow across enterprise planning ecosystems; lead C-suite workshops on luxury supply chain complexity</li>
           </ul>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-date">Mar 2022 – Oct 2023<br>EY<br>India</div>
+        <div class="exp-date" contenteditable="false"><strong>EY</strong>Mar 2022 – Oct 2023<br>India</div>
         <div>
-          <div class="exp-role">Supply Chain Consultant</div>
-          <div class="exp-company">Ernst &amp; Young</div>
+          <div class="exp-role" contenteditable="false">Supply Chain Consultant</div>
+          <div class="exp-company" contenteditable="false">Ernst &amp; Young</div>
           <ul class="exp-bullets">
-            <li>Delivered supply chain optimization and digital transformation for fashion and retail clients across <strong>demand planning, S&amp;OP design, and technology implementation</strong></li>
-            <li>Conducted supply chain diagnostic assessments and technology evaluations for global fashion organizations</li>
-            <li>Designed <strong>demand planning improvements and S&amp;OP frameworks</strong> for seasonal merchandise and open-to-buy planning cycles</li>
+            <li contenteditable="false">Delivered supply chain optimization and digital transformation for fashion and retail clients across <strong>demand planning, S&amp;OP design, and technology implementation</strong></li>
+            <li contenteditable="false">Conducted supply chain diagnostic assessments and technology evaluations for global fashion organizations</li>
+            <li contenteditable="false">Designed <strong>demand planning improvements and S&amp;OP frameworks</strong> for seasonal merchandise and open-to-buy planning cycles</li>
           </ul>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-date">Sep 2021 – Mar 2022<br>Ralph Lauren LLP<br>India</div>
+        <div class="exp-date" contenteditable="false"><strong>Ralph Lauren LLP</strong>Sep 2021 – Mar 2022<br>India</div>
         <div>
-          <div class="exp-role">Product Management Analyst</div>
-          <div class="exp-company">Enterprise Data Products</div>
+          <div class="exp-role" contenteditable="false">Product Management Analyst</div>
+          <div class="exp-company" contenteditable="false">Enterprise Data Products</div>
           <ul class="exp-bullets">
-            <li>Owned end-to-end <strong>product vision, roadmap, and backlog prioritization</strong> for enterprise data products across multiple business units</li>
-            <li>Primary stakeholder contact for assigned data products; presented roadmaps and delivery progress to senior technology and business leadership</li>
-            <li>Partnered with Data Engineering and Scrum Masters to convert roadmaps into <strong>executable sprint plans</strong>; tracked risks, dependencies, and operational readiness</li>
-            <li>Defined and monitored <strong>adoption, quality, and value realization metrics</strong>; conducted post-launch reviews and refined roadmaps based on usage trends</li>
+            <li contenteditable="false">Owned end-to-end <strong>product vision, roadmap, and backlog prioritization</strong> for enterprise data products across multiple business units</li>
+            <li contenteditable="false">Primary stakeholder contact for assigned data products; presented roadmaps and delivery progress to senior technology and business leadership</li>
+            <li contenteditable="false">Partnered with Data Engineering and Scrum Masters to convert roadmaps into <strong>executable sprint plans</strong>; tracked risks, dependencies, and operational readiness</li>
+            <li contenteditable="false">Defined and monitored <strong>adoption, quality, and value realization metrics</strong>; conducted post-launch reviews and refined roadmaps based on usage trends</li>
           </ul>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-date">Jan 2021 – Jun 2021<br>Aditya Birla Fashion &amp; Retail<br>India</div>
+        <div class="exp-date" contenteditable="false"><strong>Aditya Birla Fashion &amp; Retail</strong>Jan 2021 – Jun 2021<br>India</div>
         <div>
-          <div class="exp-role">Management Trainee</div>
-          <div class="exp-company">Buying, Merchandising &amp; Supply Chain</div>
+          <div class="exp-role" contenteditable="false">Management Trainee</div>
+          <div class="exp-company" contenteditable="false">Buying, Merchandising &amp; Supply Chain</div>
           <ul class="exp-bullets">
-            <li>Managed end-to-end operations across buying, merchandising, and supply chain for a <strong>multi-brand fashion portfolio</strong> spanning luxury, premium, and mass market</li>
-            <li>Supported inventory planning and supplier management; built <strong>competitive benchmarking frameworks</strong> for category planning and new product development</li>
+            <li contenteditable="false">Managed end-to-end operations across buying, merchandising, and supply chain for a <strong>multi-brand fashion portfolio</strong> spanning luxury, premium, and mass market</li>
+            <li contenteditable="false">Supported inventory planning and supplier management; built <strong>competitive benchmarking frameworks</strong> for category planning and new product development</li>
           </ul>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-date">May 2017 – Aug 2019<br>Accenture Technology<br>India</div>
+        <div class="exp-date" contenteditable="false"><strong>Accenture Technology</strong>May 2017 – Aug 2019<br>India</div>
         <div>
-          <div class="exp-role">Technology Analyst</div>
-          <div class="exp-company">Accenture Technology</div>
+          <div class="exp-role" contenteditable="false">Technology Analyst</div>
+          <div class="exp-company" contenteditable="false">Accenture Technology</div>
           <ul class="exp-bullets">
-            <li><span class="placeholder-note">[Add role details and key contributions from this position]</span></li>
+            <li contenteditable="false"><span class="ph">[Add role details and key contributions from this position]</span></li>
           </ul>
         </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-date">Nov 2019 – Jan 2020<br>Reliance Digital<br>India</div>
+        <div class="exp-date" contenteditable="false"><strong>Reliance Digital</strong>Nov 2019 – Jan 2020<br>India</div>
         <div>
-          <div class="exp-role">Retail Management Intern</div>
-          <div class="exp-company">Reliance Digital</div>
+          <div class="exp-role" contenteditable="false">Retail Management Intern</div>
+          <div class="exp-company" contenteditable="false">Reliance Digital</div>
           <ul class="exp-bullets">
-            <li>Gained foundational retail operations exposure across <strong>inventory management, visual merchandising, customer engagement, and store operations</strong></li>
+            <li contenteditable="false">Gained foundational retail operations exposure across <strong>inventory management, visual merchandising, customer engagement, and store operations</strong></li>
           </ul>
         </div>
       </div>
@@ -979,47 +1017,109 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 </section>
 
 <!-- EDUCATION & CREDENTIALS -->
-<section class="section cred-section" id="education">
-  <div class="section-head reveal">
-    <div class="section-index">vi.</div>
+<section class="section section-stone" id="education">
+  <div class="section-header reveal">
+    <div class="section-label">vi. &nbsp; Education</div>
     <h2 class="section-title">Education &amp;<br><em>credentials.</em></h2>
   </div>
-  <div class="cred-body">
+  <div class="section-content">
     <div></div>
     <div class="cred-cols reveal">
       <div>
         <div class="cred-group-label">Education</div>
         <div class="cred-item">
-          <h4>Master of Fashion Management</h4>
-          <span>NIFT India &nbsp;·&nbsp; 2019–2021 &nbsp;·&nbsp; Luxury Brand Management, Buying &amp; Merchandising, Supply Chain, E-Commerce</span>
+          <div class="cred-title" contenteditable="false">Master of Fashion Management</div>
+          <div class="cred-sub" contenteditable="false">NIFT India &nbsp;·&nbsp; 2019–2021 &nbsp;·&nbsp; Luxury Brand Management, Buying &amp; Merchandising, Supply Chain, E-Commerce</div>
         </div>
         <div class="cred-item">
-          <h4>Bachelor of Technology – Electronics Engineering</h4>
-          <span><span class="placeholder-note">[University Name]</span> &nbsp;·&nbsp; 2013–2017 &nbsp;·&nbsp; Data &amp; Analytics, AI Engineering</span>
+          <div class="cred-title" contenteditable="false">Bachelor of Technology – Electronics Engineering</div>
+          <div class="cred-sub" contenteditable="false"><span class="ph">[University Name]</span> &nbsp;·&nbsp; 2013–2017 &nbsp;·&nbsp; Data &amp; Analytics, AI Engineering</div>
         </div>
         <div class="cred-item">
-          <h4><span class="placeholder-note">[Academic award or distinction, if applicable]</span></h4>
-          <span><span class="placeholder-note">[Institution · Year]</span></span>
+          <div class="cred-title" contenteditable="false"><span class="ph">[Academic award or distinction, if applicable]</span></div>
+          <div class="cred-sub" contenteditable="false"><span class="ph">[Institution · Year]</span></div>
         </div>
       </div>
       <div>
         <div class="cred-group-label">Certifications</div>
         <div class="cred-item">
-          <h4>o9 Solutions Advanced Technical Expert</h4>
-          <span>o9 Solutions &nbsp;·&nbsp; <span class="placeholder-note">[Year]</span></span>
+          <div class="cred-title" contenteditable="false">o9 Solutions Advanced Technical Expert</div>
+          <div class="cred-sub" contenteditable="false">o9 Solutions &nbsp;·&nbsp; <span class="ph">[Year]</span></div>
         </div>
         <div class="cred-item">
-          <h4>SAFe Agile</h4>
-          <span>Scaled Agile Framework</span>
+          <div class="cred-title" contenteditable="false">SAFe Agile</div>
+          <div class="cred-sub" contenteditable="false">Scaled Agile Framework</div>
         </div>
         <div class="cred-item">
-          <h4>IBM Product Management</h4>
-          <span>IBM</span>
+          <div class="cred-title" contenteditable="false">IBM Product Management</div>
+          <div class="cred-sub" contenteditable="false">IBM</div>
         </div>
         <div class="cred-item">
-          <h4><span class="placeholder-note">[Additional certification]</span></h4>
-          <span><span class="placeholder-note">[Issuing body · Year]</span></span>
+          <div class="cred-title" contenteditable="false"><span class="ph">[Additional certification]</span></div>
+          <div class="cred-sub" contenteditable="false"><span class="ph">[Issuing body · Year]</span></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THOUGHTS -->
+<section class="section" id="thoughts">
+  <div class="section-header reveal">
+    <div class="section-label">vii. &nbsp; Thoughts</div>
+    <h2 class="section-title">Thoughts<br><em>in writing.</em></h2>
+  </div>
+  <div class="section-content">
+    <div></div>
+    <div>
+      <p class="thoughts-intro reveal" contenteditable="false">Writing on supply chain transformation, AI in planning, luxury operations, and the gap between strategy and execution. Published when the thinking is ready — not on a schedule.</p>
+
+      <div class="thoughts-list">
+
+        <a class="thought-item" href="#" target="_blank">
+          <div>
+            <div class="thought-category" contenteditable="false">Supply Chain · AI</div>
+            <h3 class="thought-title" contenteditable="false">Why AI Demand Sensing Fails Without the Right Data Architecture</h3>
+            <p class="thought-excerpt" contenteditable="false">Most o9 implementations underdeliver on AI not because the model is wrong, but because the master data feeding it is. Here's what needs to be true before you switch the feature on.</p>
+          </div>
+          <div class="thought-meta">
+            <span class="thought-date" contenteditable="false">Oct 2026</span>
+            <span class="thought-read" contenteditable="false">6 min read</span>
+            <span class="thought-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="thought-item" href="#" target="_blank">
+          <div>
+            <div class="thought-category" contenteditable="false">Luxury · Operations</div>
+            <h3 class="thought-title" contenteditable="false">What Standard Supply Chain Templates Get Wrong About Luxury</h3>
+            <p class="thought-excerpt" contenteditable="false">Seasonal drops, limited editions, multi-brand portfolios — the constraints that define luxury planning are the same ones that generic S&amp;OP frameworks were never designed for.</p>
+          </div>
+          <div class="thought-meta">
+            <span class="thought-date" contenteditable="false">Sep 2026</span>
+            <span class="thought-read" contenteditable="false">5 min read</span>
+            <span class="thought-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="thought-item" href="#" target="_blank">
+          <div>
+            <div class="thought-category" contenteditable="false">Transformation · Leadership</div>
+            <h3 class="thought-title" contenteditable="false">The C-Suite Workshop Has to Inform the Platform Config</h3>
+            <p class="thought-excerpt" contenteditable="false">Planning transformation fails when the executive alignment session and the technical implementation happen in separate rooms. Running both changes what you build.</p>
+          </div>
+          <div class="thought-meta">
+            <span class="thought-date" contenteditable="false">Aug 2026</span>
+            <span class="thought-read" contenteditable="false">4 min read</span>
+            <span class="thought-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- ─ ADD NEW ARTICLES BELOW THIS LINE ─
+             Copy a block above, paste here, update fields, set real href.
+             To hide until ready: add class "thought-draft"
+        ─────────────────────────────────────── -->
+
       </div>
     </div>
   </div>
@@ -1027,42 +1127,42 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 
 <!-- CONTACT -->
 <section class="section" id="contact">
-  <div class="section-head reveal">
-    <div class="section-index">vii.</div>
+  <div class="section-header reveal">
+    <div class="section-label">viii. &nbsp; Contact</div>
     <h2 class="section-title">Let's<br><em>connect.</em></h2>
   </div>
-  <div class="contact-inner">
+  <div class="section-content">
     <div></div>
-    <div class="contact-content reveal">
-      <div class="contact-intro">
-        <p>I'm open to Supply Chain Transformation and o9 leadership roles where luxury and beauty complexity is the norm, not the edge case. If you're building or scaling a planning platform in these sectors, I'd like to hear about it.</p>
+    <div class="contact-layout reveal">
+      <div>
+        <p class="contact-intro-text" contenteditable="false">I'm open to Supply Chain Transformation and o9 leadership roles where luxury and beauty complexity is the norm, not the edge case. If you're building or scaling a planning platform in these sectors, I'd like to hear about it.</p>
       </div>
       <div class="contact-links">
-        <a href="mailto:your.email@gmail.com" class="contact-link" id="link-email">
+        <a href="mailto:your.email@gmail.com" class="contact-link">
           <div>
             <div class="contact-type">Email</div>
-            <div class="contact-val"><span class="placeholder-note">[your.email@gmail.com]</span></div>
+            <div class="contact-val" contenteditable="false"><span class="ph">[your.email@gmail.com]</span></div>
           </div>
           <span class="contact-arrow">→</span>
         </a>
-        <a href="https://linkedin.com/in/yashikabarhaiya" target="_blank" class="contact-link" id="link-linkedin">
+        <a href="https://linkedin.com/in/yashikabarhaiya" target="_blank" class="contact-link">
           <div>
             <div class="contact-type">LinkedIn</div>
-            <div class="contact-val">linkedin.com/in/yashikabarhaiya</div>
+            <div class="contact-val" contenteditable="false">linkedin.com/in/yashikabarhaiya</div>
           </div>
           <span class="contact-arrow">→</span>
         </a>
-        <a href="tel:+91XXXXXXXXXX" class="contact-link" id="link-phone">
+        <a href="tel:+91XXXXXXXXXX" class="contact-link">
           <div>
             <div class="contact-type">Phone</div>
-            <div class="contact-val"><span class="placeholder-note">[+91 XXXXXXXXXX]</span></div>
+            <div class="contact-val" contenteditable="false"><span class="ph">[+91 XXXXXXXXXX]</span></div>
           </div>
           <span class="contact-arrow">→</span>
         </a>
         <a href="#" class="contact-link">
           <div>
             <div class="contact-type">Location</div>
-            <div class="contact-val">Mumbai, India</div>
+            <div class="contact-val" contenteditable="false">Mumbai, India</div>
           </div>
           <span class="contact-arrow">→</span>
         </a>
@@ -1073,19 +1173,90 @@ footer em { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 
 <!-- FOOTER -->
 <footer>
-  <p><em>Yashika Barhaiya</em> &nbsp;·&nbsp; <span>Supply Chain Digital Transformation</span></p>
+  <p><em contenteditable="false">Yashika Barhaiya</em> &nbsp;·&nbsp; <span contenteditable="false">Supply Chain Digital Transformation</span></p>
   <p>© 2026 &nbsp;·&nbsp; Open to opportunities</p>
 </footer>
 
-
-
-
-
 <script>
+/* ── SCROLL / NAV ── */
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 80));
+window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 80), { passive: true });
+
+/* ── INTERSECTION OBSERVER (fade-only, no transform jitter) ── */
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal, .work-item, .phil-card, .exp-item').forEach(el => io.observe(el));</script>
-</body></html>
+}, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .work-card, .principle, .exp-item, .thought-item').forEach(el => io.observe(el));
+
+/* ── EDITOR ── */
+let editMode = false;
+const STORAGE_KEY = 'yashika_v4_edits';
+
+function getEditables() { return document.querySelectorAll('[contenteditable]'); }
+
+function toggleEdit() {
+  editMode = !editMode;
+  const btn = document.getElementById('editor-toggle');
+  const panel = document.getElementById('editor-panel');
+  const hint = document.getElementById('edit-hint');
+  getEditables().forEach(el => { el.contentEditable = editMode ? 'true' : 'false'; });
+  document.body.classList.toggle('edit-mode', editMode);
+  btn.classList.toggle('active', editMode);
+  document.getElementById('toggle-label').textContent = editMode ? 'Done editing' : 'Edit page';
+  panel.classList.toggle('open', editMode);
+  hint.classList.toggle('show', editMode);
+  if (!editMode) { saveToStorage(); hint.classList.remove('show'); }
+}
+
+function saveToStorage() {
+  const data = {};
+  getEditables().forEach((el, i) => { data[i] = el.innerHTML; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    getEditables().forEach((el, i) => { if (data[i] !== undefined) el.innerHTML = data[i]; });
+  } catch(e) {}
+}
+
+function resetEdits() {
+  if (!confirm('Reset all changes? This cannot be undone.')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  location.reload();
+}
+
+function getCleanHTML() {
+  const clone = document.documentElement.cloneNode(true);
+  ['#editor-bar','#edit-hint'].forEach(s => { const el = clone.querySelector(s); if(el) el.remove(); });
+  clone.querySelectorAll('script').forEach(s => s.remove());
+  clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+  clone.querySelector('body').classList.remove('edit-mode');
+  const minScript = document.createElement('script');
+  minScript.textContent = `const nav=document.getElementById('nav');window.addEventListener('scroll',()=>nav.classList.toggle('stuck',window.scrollY>80),{passive:true});const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}});},{threshold:0.06,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.reveal,.work-card,.principle,.exp-item,.thought-item').forEach(el=>io.observe(el));`;
+  return '<!DOCTYPE html>\n' + clone.outerHTML.replace('</body>', minScript.outerHTML + '\n</body>');
+}
+
+function saveHTML() {
+  const blob = new Blob([getCleanHTML()], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'index.html'; a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function copyHTML() {
+  navigator.clipboard.writeText(getCleanHTML()).then(() => {
+    const btn = event.target; btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy HTML', 1800);
+  }).catch(() => alert('Copy failed — use Download instead.'));
+}
+
+document.addEventListener('input', () => { if (editMode) saveToStorage(); });
+loadFromStorage();
+</script>
+
+</body>
+</html>
