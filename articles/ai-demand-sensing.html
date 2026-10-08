@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why AI Demand Sensing Fails Without the Right Data Architecture — Yashika Barhaiya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bone:    #F5F0E8;
+  --espresso:#1C1410;
+  --gold:    #A8844A;
+  --stone:   #E8E4DC;
+  --mid:     #6B5F52;
+  --soft:    #A99B8C;
+  --rule:    #D9D3C7;
+  --gold-pale:#F2EBD9;
+  --serif: 'Cormorant Garamond', 'Garamond', Georgia, serif;
+  --sans:  'Neue Haas Grotesk Text', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bone);
+  color: var(--espresso);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 2.25rem 4.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: padding 0.4s, background 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+nav.stuck {
+  padding: 1.25rem 4.5rem;
+  background: rgba(245,240,232,0.96);
+  backdrop-filter: blur(20px);
+  border-color: var(--rule);
+}
+.nav-mark {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--espresso);
+  text-decoration: none;
+}
+.nav-back {
+  font-size: 0.7rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none; color: var(--soft);
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--espresso); }
+.nav-back-arrow { transition: transform 0.2s; }
+.nav-back:hover .nav-back-arrow { transform: translateX(-3px); }
+
+/* ARTICLE LAYOUT */
+.article-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14rem 2rem 10rem;
+}
+
+/* HEADER */
+.article-category {
+  font-size: 0.63rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.article-title {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--espresso);
+  margin-bottom: 2rem;
+}
+.article-meta {
+  display: flex; gap: 2rem; align-items: center;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4rem;
+}
+.article-meta-item {
+  font-size: 0.67rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.article-meta-item strong {
+  color: var(--mid);
+  font-weight: 400;
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  margin-bottom: 0.15rem;
+}
+
+/* BODY */
+.article-body { font-size: 1rem; line-height: 1.9; color: var(--mid); }
+.article-body p { margin-bottom: 1.8rem; }
+.article-body h2 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--espresso);
+  margin: 3.5rem 0 1.2rem;
+}
+.article-body h3 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--espresso);
+  margin: 2.5rem 0 0.8rem;
+}
+.article-body strong { color: var(--espresso); font-weight: 500; }
+.article-body em { font-style: italic; }
+.article-body blockquote {
+  border-left: 2px solid var(--gold);
+  padding: 0.5rem 0 0.5rem 2rem;
+  margin: 2.5rem 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--espresso);
+  line-height: 1.5;
+}
+.article-body ul {
+  list-style: none;
+  margin: 1.5rem 0 1.8rem;
+  padding: 0;
+}
+.article-body ul li {
+  padding-left: 1.4rem;
+  position: relative;
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--mid);
+}
+.article-body ul li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--gold);
+  font-size: 0.72rem;
+  top: 0.28rem;
+}
+.article-rule {
+  width: 48px; height: 1px;
+  background: var(--gold);
+  margin: 4rem 0;
+}
+
+/* FOOTER NAV */
+.article-footer-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 3rem 0 0;
+  border-top: 1px solid var(--rule);
+  margin-top: 5rem;
+}
+.article-footer-link {
+  font-size: 0.7rem; letter-spacing: 0.16em;
+  text-transform: uppercase; text-decoration: none;
+  color: var(--soft); display: flex; align-items: center; gap: 0.5rem;
+  transition: color 0.2s;
+}
+.article-footer-link:hover { color: var(--gold); }
+
+/* PAGE FOOTER */
+footer {
+  padding: 3rem 4.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--rule);
+}
+footer p { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--soft); }
+footer em { font-family: var(--serif); font-style: italic; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.article-header-anim {
+  animation: fadeUp 1s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+}
+.article-body-anim {
+  animation: fadeUp 1s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@media (max-width: 1024px) {
+  nav { padding: 1.75rem 3rem; }
+  nav.stuck { padding: 1rem 3rem; }
+  footer { padding: 2rem 3rem; }
+}
+@media (max-width: 680px) {
+  nav { padding: 1.25rem 1.75rem; }
+  nav.stuck { padding: 0.9rem 1.75rem; }
+  .article-wrap { padding: 10rem 1.75rem 6rem; }
+  footer { padding: 2rem 1.75rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-mark">Yashika Barhaiya</a>
+  <a href="../index.html#thoughts" class="nav-back">
+    <span class="nav-back-arrow">←</span> All writing
+  </a>
+</nav>
+
+<article class="article-wrap">
+
+  <header class="article-header-anim">
+    <div class="article-category">Supply Chain &nbsp;·&nbsp; AI</div>
+    <h1 class="article-title">Why AI Demand Sensing Fails Without the Right Data Architecture</h1>
+    <div class="article-meta">
+      <div class="article-meta-item"><strong>Yashika Barhaiya</strong>Author</div>
+      <div class="article-meta-item"><strong>Oct 2026</strong>Published</div>
+      <div class="article-meta-item"><strong>6 min read</strong>Length</div>
+    </div>
+  </header>
+
+  <div class="article-body article-body-anim">
+
+    <p>Every supply chain technology vendor is selling AI-powered demand sensing. The pitch is consistent: connect your historical sales data, let the model learn seasonal patterns, and watch forecast accuracy improve. What the pitch leaves out is the part that actually determines whether any of it works — the data architecture that feeds the model before the first prediction is made.</p>
+
+    <p>In my experience configuring o9 implementations for global beauty and luxury enterprises, AI demand sensing is rarely the technical bottleneck. The bottleneck is almost always upstream. The master data is wrong, inconsistent, or structured in a way the planning system cannot use. And when the master data is wrong, the AI amplifies the error rather than correcting it.</p>
+
+    <blockquote>The question isn't whether your planning platform has AI demand sensing. The question is whether your data architecture is ready to make it work.</blockquote>
+
+    <h2>What "demand sensing" actually needs</h2>
+
+    <p>Demand sensing is a short-horizon forecasting technique. It uses high-frequency signals — point-of-sale data, shipment history, market movement, promotional calendars — to produce a near-term demand view that's more accurate than a statistical baseline alone. In an o9 environment, this runs as a machine learning layer on top of your planning graph.</p>
+
+    <p>For that to work reliably across 100+ product categories and 102 markets, you need several things to be true simultaneously:</p>
+
+    <ul>
+      <li><strong>Product master consistency.</strong> The same SKU cannot have three different hierarchies in three source systems. If your SAP material master uses a different category structure than your o9 planning hierarchy, the model is training on a broken signal.</li>
+      <li><strong>Clean location data.</strong> Market-level demand data must map unambiguously to the planning nodes. Orphaned distribution points, renamed retailers, and missing market codes all introduce noise that looks like demand volatility to the model.</li>
+      <li><strong>Reliable actuals cadence.</strong> Demand sensing models retrain continuously. If your actuals load is delayed, partial, or inconsistently timed, the model's training window shifts with every run — and accuracy degrades in ways that are hard to diagnose.</li>
+      <li><strong>Promotional event tagging.</strong> Promotions are structural demand signals, not noise to be smoothed. If they aren't tagged and attributed in your data model, the AI will learn from their effect without understanding their cause — and the next promotion will fool it again.</li>
+    </ul>
+
+    <p>None of these are AI problems. They are data governance and integration architecture problems. They have to be solved before you turn the feature on.</p>
+
+    <h2>Where SAP integration makes or breaks it</h2>
+
+    <p>For most of the enterprises I work with, the authoritative source for product and location master data is SAP. The challenge is that SAP was not built to feed a machine learning planning layer directly. The data model, the extraction logic, and the cadence of updates all need careful architecture to land correctly in o9.</p>
+
+    <p>The most common failure mode I see is an integration that moves data from SAP to o9 correctly at the field level, but incorrectly at the structural level. Individual attributes arrive, but the planning hierarchy — the thing that tells the model how a product relates to a category, a brand, a region — is assembled wrong. The AI can't see the patterns it needs to learn from because the data doesn't reflect how the business actually thinks about its products.</p>
+
+    <p>Designing the SAP integration framework is not a data engineering task handed off after strategy is complete. It has to be done with the planning architecture in mind from the beginning. The people configuring o9 need to be in the room when the integration is being scoped.</p>
+
+    <h2>The luxury complication</h2>
+
+    <p>Standard consumer goods enterprises have it somewhat easier here. Product lifecycles are longer, promotional calendars are more predictable, and market structures are more stable. In luxury and beauty, you're working with seasonal drops, limited editions, regional exclusives, and portfolio structures that change year over year.</p>
+
+    <p>This means your data architecture needs to handle:</p>
+
+    <ul>
+      <li>Products that exist for one season and never return — but whose sell-through pattern should inform the next similar launch</li>
+      <li>Markets where a product is available selectively, changing the demand geography mid-cycle</li>
+      <li>Brand-level versus category-level planning nodes that don't always share the same hierarchy logic</li>
+    </ul>
+
+    <p>Each of these creates a data modeling decision. Get them wrong and the demand sensing model is learning from a distorted picture of how demand actually flows through your system.</p>
+
+    <h2>What to do before you switch it on</h2>
+
+    <p>Before enabling AI demand sensing in any o9 implementation, I run through a structured readiness check across four domains: product master, location master, actuals integrity, and event attribution. Each domain has specific criteria that need to hold at the scale of the deployment — not just in the test environment with clean sample data.</p>
+
+    <p>The check is not exhaustive. It's designed to surface the structural problems quickly. In a 102-market implementation, a structural problem in the product hierarchy might affect 40% of your demand nodes simultaneously. You want to find that before the model goes live, not after the first planning cycle.</p>
+
+    <p>The work of getting to data architecture readiness is unglamorous. It involves a lot of data profiling, a lot of conversations between supply chain configurators and SAP integration teams, and sometimes difficult decisions about which historical data is worth cleaning and which is better excluded from model training entirely.</p>
+
+    <p>But it's the work that determines whether the AI feature delivers on the promise in the vendor slide deck. Skip it, and you'll be running AI on broken data — which is worse than running no AI at all, because the errors carry the authority of a machine learning model and are harder to challenge.</p>
+
+    <div class="article-rule"></div>
+
+    <p>The planning platforms are genuinely impressive. The AI capabilities in o9 are real. But capability and readiness are different things. The question worth asking before any AI demand sensing project isn't "which platform should we use?" — it's "is our data architecture ready to make this work?"</p>
+
+    <p>That question takes longer to answer. And the answer is the thing that matters.</p>
+
+  </div>
+
+  <nav class="article-footer-nav">
+    <a href="../index.html#thoughts" class="article-footer-link">← All writing</a>
+    <a href="luxury-supply-chain.html" class="article-footer-link">Next article →</a>
+  </nav>
+
+</article>
+
+<footer>
+  <p><em>Yashika Barhaiya</em> &nbsp;·&nbsp; Supply Chain Digital Transformation</p>
+  <p>© 2026 &nbsp;·&nbsp; <a href="../index.html" style="color:inherit;text-decoration:none;">Back to portfolio</a></p>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 80), { passive: true });
+</script>
+</body>
+</html>
