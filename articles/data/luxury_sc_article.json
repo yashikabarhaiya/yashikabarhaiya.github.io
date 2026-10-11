@@ -1,0 +1,106 @@
+{
+  "article": {
+    "meta": {
+      "title": "The Biggest Mistake Consultants Make When Entering Luxury Supply Chain",
+      "subtitle": "Bringing FMCG logic into a Maison does not transfer best practices. It imports the wrong objective function.",
+      "category": "Supply Chain Transformation",
+      "tags": [
+        "Luxury Supply Chain",
+        "Supply Chain Planning",
+        "Digital Transformation",
+        "IBP",
+        "o9 Solutions",
+        "SAP IBP",
+        "Consulting"
+      ],
+      "type": "Provocation",
+      "read_time_minutes": 6,
+      "audience": [
+        "Supply Chain Leaders in Luxury",
+        "C-Suite (CEO, COO, CFO)",
+        "Supply Chain Technology Vendors"
+      ]
+    },
+    "headline": "The biggest mistake consultants make when entering Luxury supply chain? Bringing FMCG logic with them.",
+    "opening": {
+      "paragraph_1": "When a supply chain consultant moves from a CPG engagement to a Luxury Maison, they arrive carrying a toolkit forged on a specific industrial logic: maximize availability, compress lead times, hedge demand uncertainty, and drive cost-per-unit down. It is a coherent, battle-tested approach. In Luxury, it is wrong — not partially wrong, but wrong at the level of the objective function.",
+      "paragraph_2": "The damage this causes is not theoretical. It shows up in planning platforms configured to optimize toward outcomes that destroy brand equity, in safety stock policies that undermine the scarcity that funds the margin, and in S&OP agendas that are held hostage to KPIs borrowed from a different industry. The tools are not the problem. The logic they have been given is."
+    },
+    "arguments": [
+      {
+        "id": "arg_01",
+        "title": "Service level targets: the fill rate inversion",
+        "cpg_logic": {
+          "label": "CPG logic",
+          "statement": "Maximize fill rate. A 100% service level is the operational ideal — any stockout is a failure state to be engineered out of the system.",
+          "implications": [
+            "Safety stock calibrated to minimize stockout probability",
+            "Replenishment triggers set to maintain continuous availability",
+            "KPIs penalize any instance of demand going unfulfilled"
+          ]
+        },
+        "luxury_logic": {
+          "label": "Luxury logic",
+          "statement": "A 100% fill rate can destroy perceived exclusivity. Managed scarcity is not a supply failure — it is a pricing and brand mechanism that must be planned for, not planned against.",
+          "implications": [
+            "Allocation caps enforced at the channel and door level",
+            "Deliberate non-fulfilment of certain demand cohorts to maintain waitlist tension",
+            "Service level targets set by brand strategy, not by operations"
+          ]
+        },
+        "practitioner_note": "The planning system consequence: standard inventory optimization modules in o9, SAP IBP, and Blue Yonder are built to minimize stockout cost. In Luxury, the planner must introduce explicit scarcity constraints that override the optimizer's natural tendency toward availability. This is not a configuration footnote — it is a fundamental rewrite of the objective function."
+      },
+      {
+        "id": "arg_02",
+        "title": "Safety stock: hedging versus engineering uncertainty",
+        "cpg_logic": {
+          "label": "CPG logic",
+          "statement": "Demand uncertainty is a problem to be solved. Safety stock exists to absorb forecast error and protect service levels against demand volatility.",
+          "implications": [
+            "Safety stock calculated as a function of forecast error and desired service level",
+            "Demand sensing investments aimed at reducing uncertainty",
+            "IBP processes oriented toward consensus on a single best forecast"
+          ]
+        },
+        "luxury_logic": {
+          "label": "Luxury logic",
+          "statement": "Luxury deliberately manufactures demand uncertainty as a pricing mechanism. The waitlist, the product drop, the restricted edition — these are engineered demand signals, not demand failures. Safety stock logic that smooths them out destroys what they were designed to create.",
+          "implications": [
+            "Demand uncertainty is a brand asset, not an operational liability",
+            "Safety stock policy must distinguish between structural uncertainty (to buffer) and manufactured uncertainty (to preserve)",
+            "Consensus forecasting in S&OP must respect brand-mandated demand ceilings, not attempt to clear them"
+          ]
+        },
+        "practitioner_note": "This creates a genuine modelling problem in standard IBP tools. A planning platform configured to minimize forecast error will, over time, push the organization toward better demand visibility — which in Luxury means visibility into the very demand signals the brand has invested in making opaque. The tool works against the strategy unless this constraint is explicitly encoded."
+      },
+      {
+        "id": "arg_03",
+        "title": "Platform deployment: the objective function problem",
+        "cpg_logic": {
+          "label": "Standard deployment approach",
+          "statement": "Deploy the template. Configure to industry best practice. Tune the parameters for your data. Go live.",
+          "implications": [
+            "Demand planning modules built on statistical baseline + causal factors",
+            "Supply optimization configured to minimize cost subject to service level constraints",
+            "S&OP cadence oriented toward volume/revenue reconciliation"
+          ]
+        },
+        "luxury_logic": {
+          "label": "Luxury deployment requirement",
+          "statement": "Before touching a configuration parameter, the objective function must be rewritten. What is this platform being asked to optimize? If the answer is availability and cost, it will produce the wrong answer at every planning cycle.",
+          "implications": [
+            "Demand planning seeded by brand calendar, waitlist depth, and editorial signals — not POS velocity alone",
+            "Supply optimization constrained by artisan capacity, provenance requirements, and brand-mandated scarcity targets",
+            "S&OP agenda restructured to include brand calendar alignment and scarcity governance as first-class agenda items"
+          ]
+        },
+        "practitioner_note": "This applies to every major APS platform currently being deployed in Luxury — o9 Solutions, SAP IBP, Kinaxis. None of them arrive pre-configured for Luxury logic. The configuration work required to make them brand-intelligent is substantial, underestimated in every implementation business case, and almost never adequately resourced by the SI delivering the deployment."
+      }
+    ],
+    "closing": {
+      "paragraph_1": "The consultants who fail in Luxury are not incompetent. They are applying a rigorous, internally consistent methodology to a context it was not built for. The CPG playbook works — for CPG. The FMCG planning logic is correct — for FMCG. The failure is category error: assuming that supply chain best practice is context-independent.",
+      "paragraph_2": "It is not. In Luxury, the supply chain is downstream of the brand. The brand defines the objective function. The planning platform must be configured to serve that function — not the other way around. Getting this right requires not just supply chain expertise, but the capacity to hold brand logic and operational logic simultaneously. That combination is rarer than the tools.",
+      "cta": "I've seen more failed Luxury supply chain transformations start with a copy-paste from CPG than any other single cause. What did I miss?"
+    }
+  }
+}
