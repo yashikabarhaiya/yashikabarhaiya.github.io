@@ -459,6 +459,18 @@ nav.stuck {
 }
 .exp-item:first-child { border-top: 1px solid var(--rule); }
 .exp-item.vis { opacity: 1; transform: translateY(0); }
+.exp-logo {
+  display: block;
+  max-width: 110px;
+  max-height: 36px;
+  width: auto; height: auto;
+  object-fit: contain;
+  object-position: left center;
+  margin-bottom: 1.4rem;
+  filter: grayscale(1) opacity(0.55);
+  transition: filter 0.35s ease;
+}
+.exp-item:hover .exp-logo { filter: grayscale(0) opacity(1); }
 .exp-date {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
@@ -945,7 +957,7 @@ footer em { font-family: var(--serif); font-style: italic; }
     <div class="exp-list">
 
       <div class="exp-item">
-        <div class="exp-date" contenteditable="false"><strong>Accenture</strong>Nov 2023 – Present<br>Mumbai, India</div>
+        <div class="exp-date" contenteditable="false"><img src="logos/accenture.png" alt="Accenture" class="exp-logo"><strong>Accenture</strong>Nov 2023 – Present<br>Mumbai, India</div>
         <div>
           <div class="exp-role" contenteditable="false">Management Consultant</div>
           <div class="exp-company" contenteditable="false">Strategy &amp; Consulting</div>
@@ -959,7 +971,7 @@ footer em { font-family: var(--serif); font-style: italic; }
       </div>
 
       <div class="exp-item">
-        <div class="exp-date" contenteditable="false"><strong>EY</strong>Mar 2022 – Oct 2023<br>India</div>
+        <div class="exp-date" contenteditable="false"><img src="logos/ey.png" alt="EY" class="exp-logo"><strong>EY</strong>Mar 2022 – Oct 2023<br>India</div>
         <div>
           <div class="exp-role" contenteditable="false">Supply Chain Consultant</div>
           <div class="exp-company" contenteditable="false">Ernst &amp; Young</div>
@@ -972,7 +984,7 @@ footer em { font-family: var(--serif); font-style: italic; }
       </div>
 
       <div class="exp-item">
-        <div class="exp-date" contenteditable="false"><strong>Ralph Lauren LLP</strong>Sep 2021 – Mar 2022<br>India</div>
+        <div class="exp-date" contenteditable="false"><img src="logos/ralph-lauren.png" alt="Ralph Lauren" class="exp-logo"><strong>Ralph Lauren LLP</strong>Sep 2021 – Mar 2022<br>India</div>
         <div>
           <div class="exp-role" contenteditable="false">Product Management Analyst</div>
           <div class="exp-company" contenteditable="false">Enterprise Data Products</div>
@@ -986,7 +998,7 @@ footer em { font-family: var(--serif); font-style: italic; }
       </div>
 
       <div class="exp-item">
-        <div class="exp-date" contenteditable="false"><strong>Aditya Birla Fashion &amp; Retail</strong>Jan 2021 – Jun 2021<br>India</div>
+        <div class="exp-date" contenteditable="false"><img src="logos/aditya-birla.png" alt="Aditya Birla Fashion &amp; Retail" class="exp-logo"><strong>Aditya Birla Fashion &amp; Retail</strong>Jan 2021 – Jun 2021<br>India</div>
         <div>
           <div class="exp-role" contenteditable="false">Management Trainee</div>
           <div class="exp-company" contenteditable="false">Buying, Merchandising &amp; Supply Chain</div>
@@ -998,7 +1010,7 @@ footer em { font-family: var(--serif); font-style: italic; }
       </div>
 
       <div class="exp-item">
-        <div class="exp-date" contenteditable="false"><strong>Accenture Technology</strong>May 2017 – Aug 2019<br>India</div>
+        <div class="exp-date" contenteditable="false"><img src="logos/accenture.png" alt="Accenture" class="exp-logo"><strong>Accenture Technology</strong>May 2017 – Aug 2019<br>India</div>
         <div>
           <div class="exp-role" contenteditable="false">Technology Analyst</div>
           <div class="exp-company" contenteditable="false">Accenture Technology</div>
@@ -1009,10 +1021,10 @@ footer em { font-family: var(--serif); font-style: italic; }
       </div>
 
       <div class="exp-item">
-        <div class="exp-date" contenteditable="false"><strong>Reliance Digital</strong>Nov 2019 – Jan 2020<br>India</div>
+        <div class="exp-date" contenteditable="false"><img src="logos/reliance-retail.png" alt="Reliance Retail" class="exp-logo"><strong>Reliance Retail</strong>Nov 2019 – Jan 2020<br>India</div>
         <div>
           <div class="exp-role" contenteditable="false">Retail Management Intern</div>
-          <div class="exp-company" contenteditable="false">Reliance Digital</div>
+          <div class="exp-company" contenteditable="false">Reliance Retail</div>
           <ul class="exp-bullets">
             <li contenteditable="false">Gained foundational retail operations exposure across <strong>inventory management, visual merchandising, customer engagement, and store operations</strong></li>
           </ul>
